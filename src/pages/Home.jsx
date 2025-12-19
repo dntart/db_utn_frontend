@@ -84,6 +84,16 @@ const Home = () => {
 
         fetchingProducts(query.toString()) // enviamos al fech el parametro- .toString siempre pasado a string para legibilidad
     }
+    const handleResetFilters = (e) => {
+        setFilters({  //seteamos a valor origianal filters pero solo su estado, falta los inputs del DOM que se hacen 1x1
+            name: "",
+            description: "",
+            stock: 0,
+            category: "",
+            minPrice: 0,
+            maxPrice: 0
+        })
+    }
     return (
         <Layout>
             {/* Layout contiene header - main - footer */}
@@ -113,23 +123,29 @@ const Home = () => {
                             type="text"
                             name="name"
                             placeholder="busca por nombre"
-                            onChange={handleChange} />
+                            onChange={handleChange}
+                            value={filters.name}
+                        />
                         <input
                             type="text"
                             name="description"
                             placeholder="busca por su decripcion"
-                            onChange={handleChange} />
+                            onChange={handleChange}
+                            value={filters.description}
+                        />
                         <input
                             type="number"
                             name="stock"
                             placeholder="busca por cantidad"
-                            onChange={handleChange} />
+                            onChange={handleChange}
+                            value={filters.stock}
+                        />
                         <select
                             type="string"
                             name="category"
                             onChange={handleChange}
                             value={filters.category}
-                        >
+                        > <option selected>Todas las Categorias</option>  {/* texto fijo de inicio para ux */}
                             {
                                 productCategories.map((category) => <option key={category.id} value={category.value}>
                                     {category.content} </option>)  //option despliega el listado 
@@ -139,15 +155,19 @@ const Home = () => {
                             type="number"
                             name="minPrice"
                             placeholder="precio minimo"
-                            onChange={handleChange} />
+                            onChange={handleChange}
+                            value={filters.minPrice}
+                        />
                         <input
                             type="number"
                             name="maxPrice"
                             placeholder="precio maximo"
-                            onChange={handleChange} />
+                            onChange={handleChange}
+                            value={filters.maxPrice}
+                        />
 
                         <button type="submit">Aplicar filtros</button>
-                        <button type="button">Cancelar</button>
+                        <button type="button" onClick={handleResetFilters}>Cancelar</button>
                     </form>
 
                 </section>
@@ -178,7 +198,6 @@ const Home = () => {
                                     <div className="cont-btn">
                                         <button onClick={() => handleUpdateProduct(product)}>Actualizar</button> {/*product nos viene del mapeo*/}
                                         <button onClick={() => deleteProduct(product._id)}>Borrar</button>  {/*si hay usuario hay boton*/}
-
                                     </div>
                                 }
                             </div>
