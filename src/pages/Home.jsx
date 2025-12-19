@@ -8,11 +8,20 @@ const Home = () => {
     const [products, setProducts] = useState([]) //para cambiar el valor de products/[]comienza como array vacio, despues .map le da contenido
     const { user } = useAuth() // de la caja de herramientas con destructuring sacamos user 
     const [selectedProduct, setSelectedProduct] = useState(null)
+    const [filters, setFilters] = useState({    //filter es un objeto con keys sin valor
+        name: "",
+        description: "",
+        stock: 0,
+        category: "",
+        minPrice: 0,
+        maxPrice: 0
+    }
+    )
 
     //GET ALL PRODUCTS
-    const fetchingProducts = async () => {
+    const fetchingProducts = async (query = "") => {
         try {
-            const response = await fetch("https://db-utn-backend.onrender.com/products", {
+            const response = await fetch(`https://db-utn-backend.onrender.com/products?${query}`, { //? va aqui para que la query vaya seguido
                 method: "GET"
             }) // por defecto peticion GET
             const dataProducts = await response.json() //pasamos json a js
@@ -54,7 +63,27 @@ const Home = () => {
     }
 
     // 🔹 Más adelante este return será reemplazado por un fetch
+    /* MANEJADOR DE FILTERS */
+    const handleChange = (e) => {
+        setFilters({
+            ...filters, //traemos las keys sin value
+            [e.target.name]: e.target.value  // las [] son para acceder a la keys sin nombrar
+        })
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const query = new URLSearchParams()  //URLSearchParams crea una url nueva con los parametros que se le pasa
 
+        if (filters.name) query.append("name", filters.name) // si en objeto filtro hay {name:} /crea una query ?...("nombre","value")
+        if (filters.description) query.append("description", filters.description) // si en objeto filtro hay {description:} /crea una query ?...("nombre","value")
+        if (filters.stock) query.append("stock", filters.stock) // si en objeto filtro hay {stock:} /crea una query ?...("nombre","value")
+        if (filters.category) query.append("category", filters.category) // si en objeto filtro hay {category:} /crea una query ?...("nombre","value")
+        if (filters.minPrice) query.append("minPrice", filters.minPrice) // si en objeto filtro hay {minPrice:} /crea una query ?...("nombre","value")
+        if (filters.maxPrice) query.append("maxPrice", filters.maxPrice) // si en objeto filtro hay {maxPrice:} /crea una query ?...("nombre","value")
+
+
+        fetchingProducts(query.toString()) // enviamos al fech el parametro- .toString siempre pasado a string para legibilidad
+    }
     return (
         <Layout>
             {/* Layout contiene header - main - footer */}
@@ -78,20 +107,48 @@ const Home = () => {
                     </p>
 
                 </section>
-                <section className="filter-form">
-                    <input type="text" name="name" placeholder="busca por nombre" />
-                    <input type="text" name="description" placeholder="busca por su decripcion" />
-                    <input type="number" name="stock" placeholder="busca por cantidad" />
-                    <select name="category">
-                        {
-                            productCategories.map((category) => <option key={category.id} value={category.value}>
-                                {category.content} </option>)  //option despliega el listado 
-                        }
-                    </select>
-                    <input type="number" name="minPrice" placeholder="precio minimo" />
-                    <input type="number" name="maxPrice" placeholder="precio maximo" />
-                    <button type="submit">Aplicar filtros</button>
-                    <button type="button">Cancelar</button>
+                <section >
+                    <form className="filter-form" onSubmit={handleSubmit}>  {/* inputs p/Filters */}
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="busca por nombre"
+                            onChange={handleChange} />
+                        <input
+                            type="text"
+                            name="description"
+                            placeholder="busca por su decripcion"
+                            onChange={handleChange} />
+                        <input
+                            type="number"
+                            name="stock"
+                            placeholder="busca por cantidad"
+                            onChange={handleChange} />
+                        <select
+                            type="string"
+                            name="category"
+                            onChange={handleChange}
+                            value={filters.category}
+                        >
+                            {
+                                productCategories.map((category) => <option key={category.id} value={category.value}>
+                                    {category.content} </option>)  //option despliega el listado 
+                            }
+                        </select>
+                        <input
+                            type="number"
+                            name="minPrice"
+                            placeholder="precio minimo"
+                            onChange={handleChange} />
+                        <input
+                            type="number"
+                            name="maxPrice"
+                            placeholder="precio maximo"
+                            onChange={handleChange} />
+
+                        <button type="submit">Aplicar filtros</button>
+                        <button type="button">Cancelar</button>
+                    </form>
 
                 </section>
 
