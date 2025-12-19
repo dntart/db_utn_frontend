@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import UpdateProduct from "../components/UpdateProduct";
 import { useAuth } from "../context/AuthContext";
+import { productCategories } from "../constants/categories";
 
 const Home = () => {
     const [products, setProducts] = useState([]) //para cambiar el valor de products/[]comienza como array vacio, despues .map le da contenido
@@ -77,6 +78,23 @@ const Home = () => {
                     </p>
 
                 </section>
+                <section className="filter-form">
+                    <input type="text" name="name" placeholder="busca por nombre" />
+                    <input type="text" name="description" placeholder="busca por su decripcion" />
+                    <input type="number" name="stock" placeholder="busca por cantidad" />
+                    <select name="category">
+                        {
+                            productCategories.map((category) => <option key={category.id} value={category.value}>
+                                {category.content} </option>)  //option despliega el listado 
+                        }
+                    </select>
+                    <input type="number" name="minPrice" placeholder="precio minimo" />
+                    <input type="number" name="maxPrice" placeholder="precio maximo" />
+                    <button type="submit">Aplicar filtros</button>
+                    <button type="button">Cancelar</button>
+
+                </section>
+
 
                 {selectedProduct &&
                     <UpdateProduct  //COMPONENTE
