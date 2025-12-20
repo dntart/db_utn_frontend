@@ -21,7 +21,7 @@ const Home = () => {
     //GET ALL PRODUCTS
     const fetchingProducts = async (query = "") => {
         try {
-            const response = await fetch(`https://db-utn-backend.onrender.com/products?${query}`, { //? va aqui para que la query vaya seguido
+            const response = await fetch(`http://localhost:3000/products?${query}`, { //? va aqui para que la query vaya seguido
                 method: "GET"
             }) // por defecto peticion GET
             const dataProducts = await response.json() //pasamos json a js
@@ -145,7 +145,7 @@ const Home = () => {
                             name="category"
                             onChange={handleChange}
                             value={filters.category}
-                        > <option selected>Todas las Categorias</option>  {/* texto fijo de inicio para ux */}
+                        > <option value="">Todas las Categorias</option>  {/* value=""limpia el input-dom, no el state*/}
                             {
                                 productCategories.map((category) => <option key={category.id} value={category.value}>
                                     {category.content} </option>)  //option despliega el listado 
