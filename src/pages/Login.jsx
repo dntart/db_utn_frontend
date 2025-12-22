@@ -36,8 +36,9 @@ const Login = () => {
                 alert(responseData.error) //hay respuesta pero es negativa
                 return
             }
-            /* guardar token */
+            /* REGISTRADO EXITO guardar TOKEN */
             login(responseData.token)
+            navigateUser("/")   //vamos al home
 
         } catch (error) {
             console.log(error) //no hay respuesta
