@@ -1,7 +1,11 @@
 import { useState } from "react";
 import Layout from "../components/Layout";
+import { useAuth } from "../context/AuthContext";
+
 
 const AddProduct = () => {
+
+    const { token } = useAuth()
 
     //captura del contenido del form
     const [formData, setFormData] = useState({  //valor inicial
@@ -24,15 +28,18 @@ const AddProduct = () => {
         }
 
         try {
-            const response = await fetch(`https://db-utn-backend.onrender.com/products`, { // vamos a backend y el back gestiona la api
+            const response = await fetch(`http://localhost:3000/products`, { // vamos a backend y el back gestiona la api
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`  // lo mismo haciamos en bruno
                 },
                 body: JSON.stringify(dataToSend) //pasamos a json formData
             })
+            const responseData = await response.json()
+            console.log(responseData)
             if (!response.ok) {
-                alert("❌Producto NO agregado")
+                alert("❌error al cargar el producto")
                 return
             }
             alert("✅Producto agregado con éxito")
@@ -54,7 +61,10 @@ const AddProduct = () => {
 
     //captura cambios en inputs del form
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })  //1ro operador de propagacion...formData trae todo las key del object automaticamente,2do [nombreDelInput]trae el valor de name ej stock y conecta e, 3ro el valor del key, ej stock:1(valor)
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        })  //1ro operador de propagacion...formData trae todo las key del object automaticamente,2do [nombreDelInput]trae el valor de name ej stock y conecta e, 3ro el valor del key, ej stock:1(valor)
 
     }
 

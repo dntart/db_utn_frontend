@@ -3,6 +3,7 @@ import { useState, createContext, useContext } from "react"
 const AuthContext = createContext() //1RO . creamos el contexto
 
 const AuthProvider = ({ children }) => {  //2DO. FUNCION GRAL. //es un destructuring de props.children
+    const [token, setToken] = useState(localStorage.getItem("token")) // si ponemos "" de valor inicial al cambiar de page perdemos el token, siempre debe ir atado al token inicial
     const [user, setUser] = useState(false)  //herramienta 1
 
     const login = (token) => {  //herramienta 2 que despues vamos a poder llamar mediante el custom hook
@@ -17,7 +18,7 @@ const AuthProvider = ({ children }) => {  //2DO. FUNCION GRAL. //es un destructu
 
     }
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>  {/*El .Provider tiene una propiedad (prop) obligatoria llamada value. Lo que pongas dentro de value es lo que se repartirá a toda la aplicación.*/}
+        <AuthContext.Provider value={{token, user, login, logout }}>  {/*El .Provider tiene una propiedad (prop) obligatoria llamada value. Lo que pongas dentro de value es lo que se repartirá a toda la aplicación.*/}
             {children}  {/* si no va entre {} seria "string" */}
         </AuthContext.Provider>
     )
