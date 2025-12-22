@@ -5,7 +5,12 @@ const AuthContext = createContext() //1RO . creamos el contexto
 const AuthProvider = ({children}) => {  //2DO. FUNCION GRAL. //es un destructuring de props.children
     const [user, setUser] = useState(false)  //herramienta 1
 
-    const login = () => setUser(true)    //herramienta 2 que despues vamos a poder llamar mediante el custom hook
+    const login = (token) =>  {  //herramienta 2 que despues vamos a poder llamar mediante el custom hook
+    console.log(token) 
+    localStorage.setItem("token", token)  //guardamos TOKEN en almacenamiento local p/poder usarlo desde las otras pages,("nombre", value)
+    setUser(true)
+    } 
+
     const logout = () => setUser(false) //herramienta 3 que despues vamos a poder llamar mediante el custom hook
    
      return (
