@@ -6,18 +6,18 @@ import { productCategories } from "../constants/categories";
 
 const Home = () => {
     const [products, setProducts] = useState([]) //para cambiar el valor de products/[]comienza como array vacio, despues .map le da contenido
-    const { user } = useAuth() // de la caja de herramientas con destructuring sacamos user 
+    const { token, user } = useAuth() // de la caja de herramientas con destructuring sacamos user 
     const [selectedProduct, setSelectedProduct] = useState(null)
     const [filters, setFilters] = useState({    //filter es un objeto con keys sin valor
         name: "",
         description: "",
         stock: 0,
-        category: "",
+        category: "",       
         minPrice: 0,
         maxPrice: 0
     }
     )
-
+console.log(user, "<-payload desde home ")
     //GET ALL PRODUCTS
     const fetchingProducts = async (query = "") => {
         try {
@@ -104,7 +104,7 @@ const Home = () => {
                 <section className="banner">
                     <h1>Nuestros Productos</h1>
                     <p>
-                        La mejor selección de productos de calidad. Todo lo que necesitás en un solo lugar.
+                       Bienvenido {user && user.id} La mejor selección de productos de calidad. Todo lo que necesitás en un solo lugar.
                     </p>
                 </section>
 

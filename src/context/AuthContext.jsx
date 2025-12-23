@@ -17,19 +17,22 @@ console.log(decodeJWT("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NDc2OWNm
 /* AUTHPROVIDER */
 const AuthProvider = ({ children }) => {  //2DO. FUNCION GRAL. //es un destructuring de props.children
 
-    const savedToken = localStorage.getItem("token")  // el obtener el token del localStorage se usa mucho y lo volvemos variable
-    const [token, setToken] = useState(savedToken || null) // si ponemos "" de valor inicial al cambiar de page perdemos el token, siempre debe ir atado al token inicial
-    const [user, setUser] = useState(() => savedToken ? decodeJWT(savedToken) : null)  //ya no va a tener el valor boolean sino que va estar atado al payloadToken, user=payloadToken (sino al reiniciar la pagina se pierde el token y el true)
+    const savedToken = localStorage.getItem("token")  //pedimos token al localStorage se usa mucho y lo volvemos variable
+    const [token, setToken] = useState(savedToken || null) //herramienta 1. si ponemos "" de valor inicial al cambiar de page perdemos el token, siempre debe ir atado al token inicial
+    const [user, setUser] = useState(() => savedToken ? decodeJWT(savedToken) : null)  //herramienta 2.ya no va a tener el valor boolean sino que va estar atado al payloadToken, user=payloadToken (sino al reiniciar la pagina se pierde el token y el true)
 
-    const login = (token) => {  //herramienta 2 que despues vamos a poder llamar mediante el custom hook
+    const login = (token) => {  //herramienta 3. que despues vamos a poder llamar mediante el custom hook
         console.log(token)
         localStorage.setItem("token", token)  //guardamos TOKEN en almacenamiento local p/poder usarlo desde las otras pages,("nombre", value)
-        setUser(true)
+        setToken(token) // es el primero generado antes de que exista savedToken, que es producto de leer este token
+        setUser(decodeJWT(token))
     }
 
     const logout = () => {
         localStorage.removeItem("token")
-        setUser(false) //herramienta 3 que despues vamos a poder llamar mediante el custom hook
+        setToken(null) //
+        setUser(null) //herramienta 4. que despues vamos a poder llamar mediante el custom hook
+
 
     }
     return (
