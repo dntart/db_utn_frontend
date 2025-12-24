@@ -1,6 +1,9 @@
 import { useState } from "react"
+import { useAuth } from "../context/AuthContext"
 
 const UpdateProduct = ({ product, onClose, onUpdate }) => {  // componentes siempre en MAYUSCULA/(props)==={}, {product}===props.product, DESTRUCTURING
+    const { token } = useAuth()
+
     const [loader, setLoader] = useState(false)  //estado de carga para ux/ui
     const [formData, setFormData] = useState(
         {
@@ -27,14 +30,20 @@ const UpdateProduct = ({ product, onClose, onUpdate }) => {  // componentes siem
         }
         try {
             setLoader(true)
-            const response = await fetch(`https://db-utn-backend.onrender.com/products/${product._id}`, {
+            const response = await fetch(`http://localhost:3000/products/${product._id}`, {
                 method: "PATCH",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+
                 },
                 body: JSON.stringify(dataToUpdate)
             })
-            console.log(response)
+            const responseData = await response.json() //importante para leer errores res del back
+
+            if (responseData.error) {
+                alert(responseData.error)
+            }
 
             onClose()  //si todo sale bien se patchea y se cierra el formulario
             onUpdate()

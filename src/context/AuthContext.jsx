@@ -12,7 +12,6 @@ const decodeJWT = (token) => {
         return null;
     }
 };
-console.log(decodeJWT("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NDc2OWNmNjY0YzQyNjZjOWM3NTM3NCIsImlhdCI6MTc2NjQzNDc2NCwiZXhwIjoxNzY2NDM4MzY0fQ.sPep5GjqeN3xVzDRpO5TLe0ccixOmk4bhO4_yHXNO2k"))
 
 /* AUTHPROVIDER */
 const AuthProvider = ({ children }) => {  //2DO. FUNCION GRAL. //es un destructuring de props.children
@@ -22,7 +21,6 @@ const AuthProvider = ({ children }) => {  //2DO. FUNCION GRAL. //es un destructu
     const [user, setUser] = useState(() => savedToken ? decodeJWT(savedToken) : null)  //herramienta 2.ya no va a tener el valor boolean sino que va estar atado al payloadToken, user=payloadToken (sino al reiniciar la pagina se pierde el token y el true)
 
     const login = (token) => {  //herramienta 3. que despues vamos a poder llamar mediante el custom hook
-        console.log(token)
         localStorage.setItem("token", token)  //guardamos TOKEN en almacenamiento local p/poder usarlo desde las otras pages,("nombre", value)
         setToken(token) // es el primero generado antes de que exista savedToken, que es producto de leer este token
         setUser(decodeJWT(token))

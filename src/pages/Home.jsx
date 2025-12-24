@@ -6,28 +6,29 @@ import { productCategories } from "../constants/categories";
 
 const Home = () => {
     const [products, setProducts] = useState([]) //para cambiar el valor de products/[]comienza como array vacio, despues .map le da contenido
+    const [error, setError] = useState(null)
     const { token, user } = useAuth() // de la caja de herramientas con destructuring sacamos user 
     const [selectedProduct, setSelectedProduct] = useState(null)
     const [filters, setFilters] = useState({    //filter es un objeto con keys sin valor
         name: "",
         description: "",
         stock: 0,
-        category: "",       
+        category: "",
         minPrice: 0,
         maxPrice: 0
     }
     )
-console.log(user, "<-payload desde home ")
     //GET ALL PRODUCTS
     const fetchingProducts = async (query = "") => {
-        try {
+        setError(null)    // va null aqui para que al corregir automanticamente desaparezca el mensaje 
+                try {
             const response = await fetch(`http://localhost:3000/products?${query}`, { //? va aqui para que la query vaya seguido
                 method: "GET"
             }) // por defecto peticion GET
             const dataProducts = await response.json() //pasamos json a js
             setProducts(dataProducts.data.reverse())  //reverse() metodo de js p revertir el orden de elementos de un array u objeto, lo usamos para ver lo agregado primero y no ultimo 
         } catch (error) {  //muestra el error y no se rompe la app
-            console.log("error a traer los productos")
+            setError("Error a traer los productos")
         }
     }
     useEffect(() => {  //use effect  es una funcion alternativa que se ejecuta luego del renderizado del contenido estatico, por lo que corre luego y no debe entorpecer lo estatico 
@@ -41,10 +42,14 @@ console.log(user, "<-payload desde home ")
             return
         }
         try {
-            const response = await fetch(`https://db-utn-backend.onrender.com/products/${idProduct}`, {  //borrado
-                method: "DELETE"
+            const response = await fetch(`http://localhost:3000/products/${idProduct}`, {  //borrado
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                },
             })
             const dataResponse = await response.json() //conversion a js
+
 
             setProducts(products.filter((product) => product._id !== idProduct))    //filtrado de productos no borrados/ si es un sistema de varios usuarios conviene hacer fetch de nuevo
 
@@ -104,7 +109,7 @@ console.log(user, "<-payload desde home ")
                 <section className="banner">
                     <h1>Nuestros Productos</h1>
                     <p>
-                       Bienvenido {user && user.id} La mejor selección de productos de calidad. Todo lo que necesitás en un solo lugar.
+                        Bienvenido {user && user.id} La mejor selección de productos de calidad. Todo lo que necesitás en un solo lugar.
                     </p>
                 </section>
 
@@ -206,8 +211,8 @@ console.log(user, "<-payload desde home ")
 
                     </div>
                 </section>
-
             </div>
+            { error && <p>{error} </p>}
         </Layout>
     );
 };
