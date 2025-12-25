@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import UpdateProduct from "../components/UpdateProduct";
 import { useAuth } from "../context/AuthContext";
 import { productCategories } from "../constants/categories";
+import { ToastMessage } from "../components/ToastMessage";
 
 const Home = () => {
     const [products, setProducts] = useState([]) //para cambiar el valor de products/[]comienza como array vacio, despues .map le da contenido
@@ -21,7 +22,7 @@ const Home = () => {
     //GET ALL PRODUCTS
     const fetchingProducts = async (query = "") => {
         setError(null)    // va null aqui para que al corregir automanticamente desaparezca el mensaje 
-                try {
+        try {
             const response = await fetch(`http://localhost:3000/products?${query}`, { //? va aqui para que la query vaya seguido
                 method: "GET"
             }) // por defecto peticion GET
@@ -36,13 +37,14 @@ const Home = () => {
     }, [])  //  2da que dice cuando ejecutar [] vacio:una vez, [id] cuando el id cambie, etc, si no esta se loopea infinitamente 
 
     // DELETE
-    const deleteProduct = async (idProduct) => { //el argumento no es definido solo es un nombre cualuqiera
+    const deleteProduct = async (idProduct) => { //el argumento no es definido solo es un nombre cualquiera
+        setError(null)
         if (!confirm("estas por borrar un producto, se solicita confirmacion.")) {
             console.log("producto no borrado", idProduct)
             return
         }
         try {
-            const response = await fetch(`http://localhost:3000/products/${idProduct}`, {  //borrado
+            const response = await fetch(`http://localhost:1111/products/${idProduct}`, {  //borrado
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -56,7 +58,7 @@ const Home = () => {
             alert(`${dataResponse.name} borrado con exito`) //ver por que no es dataResponse.data.name
 
         } catch (error) {
-            console.log("Error al borrar el producto")
+            setError("Error al borrar el producto")
         }
 
 
@@ -212,7 +214,7 @@ const Home = () => {
                     </div>
                 </section>
             </div>
-            { error && <p>{error} </p>}
+            {error && <ToastMessage error={error} color={"red"} />}  {/* enviamos argumentos */}
         </Layout>
     );
 };
