@@ -9,6 +9,7 @@ import AddProduct from "../pages/AddProduct";
 import Login from "../pages/Login";
 import Register from "../pages/Register";  //importacion no nombrada puede tener el nombre que elijamos, nombrada seria {}
 import ProtectedRouter from "../components/ProtectedRoute";
+import Contact from "../pages/Contact"; // ultimo componente importado
 
 const RouterApp = () => {
     return (
@@ -16,10 +17,12 @@ const RouterApp = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/sobre-nosotros" element={<AboutUs />} />
+                <Route path="/contacto" element={<Contact />} /> {/* para agregar e-mail Form */}
+
                 <Route
                     path="/agregar-productos"
-                    element={             
-                        <ProtectedRouter>  {/*restringe el acceso a "/agregar-productos"y ejecutar AddProduct.jsx*/}
+                    element={
+                        <ProtectedRouter>  {/*restringe el acceso a url "/agregar-productos"y ejecutar AddProduct.jsx*/}
                             <AddProduct /> {/* children */}
                         </ProtectedRouter>
                     }

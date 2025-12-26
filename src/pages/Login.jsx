@@ -22,7 +22,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault() //prevengp el reinicio de pagina
         try {
-            const response = await fetch("http://localhost:3000/auth/login", {
+            const response = await fetch("https://db-utn-backend.onrender.com/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

@@ -23,7 +23,7 @@ const Home = () => {
     const fetchingProducts = async (query = "") => {
         setError(null)    // va null aqui para que al corregir automanticamente desaparezca el mensaje 
         try {
-            const response = await fetch(`http://localhost:3000/products?${query}`, { //? va aqui para que la query vaya seguido
+            const response = await fetch(`https://db-utn-backend.onrender.com/products?${query}`, { //? va aqui para que la query vaya seguido
                 method: "GET"
             }) // por defecto peticion GET
             const dataProducts = await response.json() //pasamos json a js
@@ -44,7 +44,7 @@ const Home = () => {
             return
         }
         try {
-            const response = await fetch(`http://localhost:1111/products/${idProduct}`, {  //borrado
+            const response = await fetch(`https://db-utn-backend.onrender.com/products/${idProduct}`, {  //borrado
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`

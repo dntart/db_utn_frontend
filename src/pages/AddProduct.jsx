@@ -28,7 +28,7 @@ const AddProduct = () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:3000/products`, { // vamos a backend y el back gestiona la api
+            const response = await fetch(`https://db-utn-backend.onrender.com/products`, { // vamos a backend y el back gestiona la api
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

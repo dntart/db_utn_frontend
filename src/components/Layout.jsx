@@ -20,6 +20,7 @@ const Layout = ({ children }) => {   //funcion que envuelve las pages, ahora se 
             <nav>     {/* <nav>  {navegador} */}
                 <Link to="/">Nuestros productos</Link>
                 <Link to="/sobre-nosotros">Sobre nosotros</Link>
+                <Link to="/contacto">Contactanos</Link>
 
                 {user &&
                     <>

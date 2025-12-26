@@ -19,7 +19,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {            /* enviamos al back la peticion */
-      const response = await fetch("http://localhost:3000/auth/register", {
+      const response = await fetch("https://db-utn-backend.onrender.com/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
