@@ -30,7 +30,7 @@ const UpdateProduct = ({ product, onClose, onUpdate }) => {  // componentes siem
         }
         try {
             setLoader(true)
-            const response = await fetch(`http://localhost:3000/products/${product._id}`, {
+            const response = await fetch(`https://db-utn-backend.onrender.com/products/${product._id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
